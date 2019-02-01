@@ -17,9 +17,9 @@ public class RobotDemo {
 	public static void main(String[] args) {
 //		simple();
 //		colorCompare();
-//		imageSearch();
-		Robot robot = new Robot();
-		robot.mouseLeftClick(1275, 446);
+		imageSearch();
+//		Robot robot = new Robot();
+//		robot.mouseLeftClick(1275, 446);
 	}
 	
 	/**
