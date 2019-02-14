@@ -433,7 +433,12 @@ public class Robot{
      */
     public void saveScreenCapture(BufferedImage image,String filePath){
         try {
-            ImageIO.write(image, "png", new File(filePath));
+            File file = new File(filePath);
+            File parentPath = file.getParentFile();
+            if (!parentPath.exists()) {
+                parentPath.mkdirs();
+            }
+            ImageIO.write(image, "png", file);
         } catch (IOException e) {
             e.printStackTrace();
         }
