@@ -10,10 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 
@@ -93,7 +90,7 @@ public class Robot{
 
     /**
      * 设置资源文件路径，加载的资源文件都是在这个资源文件。
-     * <br/><b> 注意，像是{@link #getBufferImage(String)}这些获取资源文件的方法使用前必须先执行此方法进行设置资源文件所在路径 </b>
+     * <br/><b> 注意，像是{@link #(String)}这些获取资源文件的方法使用前必须先执行此方法进行设置资源文件所在路径 </b>
      * @param c 传入使用此Robot类的类，用来确定资源文件所在。资源文件都放置于传入的类当前文件夹下的res文件夹中
      */
     public void setSourcePath(Class c){
@@ -190,7 +187,7 @@ public class Robot{
 
     /**
      * 按键
-     * @param key 如：{@link KeyEvent.VK_A}
+     * @param key 如：{@link }
      */
     public void press(int key){
         robot.keyPress(key);
@@ -421,9 +418,9 @@ public class Robot{
      * @param filePath 截图保存的路径，如： /Users/apple/Desktop/xnx3.png
      * @return {@link BufferedImage}
      */
-    public void screenCapture(String filePath){
+    public boolean screenCapture(String filePath){
         BufferedImage image = robot.createScreenCapture(new Rectangle(0, 0, screenWidth,screenHeight));
-        saveScreenCapture(image, filePath);
+        return saveScreenCapture(image, filePath);
     }
 
     /**
@@ -431,7 +428,7 @@ public class Robot{
      * @param image 要保存的图像
      * @param filePath 保存至本地的文件路径，如： /Users/apple/Desktop/xnx3.png
      */
-    public void saveScreenCapture(BufferedImage image,String filePath){
+    public boolean saveScreenCapture(BufferedImage image,String filePath){
         try {
             File file = new File(filePath);
             File parentPath = file.getParentFile();
@@ -439,8 +436,10 @@ public class Robot{
                 parentPath.mkdirs();
             }
             ImageIO.write(image, "png", file);
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -831,6 +830,22 @@ public class Robot{
         List<CoordBean> list = imageSearch(cutImage, getResourceImage(imageName),SIM_ACCURATE);
 
         return list;
+    }
+
+    /**
+     * 区域找图，只找一个坐标
+     * @param imageName
+     * @param sim
+     * @return
+     */
+    public CoordBean singleImageSearch(String imageName,int sim){
+        BufferedImage cutImage = robot.createScreenCapture(new Rectangle(0, 0, screenWidth,screenHeight));
+        List<CoordBean> list = imageSearch(cutImage, getResourceImage(imageName),SIM_ACCURATE);
+
+        if (Objects.isNull(list)) {
+            return null;
+        }
+        return list.get(0);
     }
 
 

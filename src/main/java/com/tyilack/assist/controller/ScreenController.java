@@ -24,9 +24,9 @@ public class ScreenController {
     @GetMapping("/print")
     public RetResult<String> print() {
 
-        screenService.printScreen();
+        String filePath = screenService.printScreen();
 
-        return retResponse.makeOKRsp();
+        return retResponse.makeOKRsp(filePath);
     }
 
 }

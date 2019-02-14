@@ -1,10 +1,28 @@
 # tyilack-game-assist
 
+
+windows程序启动表
+```sql
+CREATE TABLE `game_windows_runner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '游戏名称',
+  `program_source` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '运行程序路径',
+  `location` varchar(255) DEFAULT NULL COMMENT '区域找图定位图片，或者某个具体坐标如：11,110',
+  `operation` varchar(255) DEFAULT NULL COMMENT '操作指令，包括鼠标操作和键盘操作',
+  `duration` int(11) DEFAULT '1000' COMMENT '操作延时',
+  `repeat` int(11) DEFAULT '1' COMMENT '操作延时',
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
 游戏表
 ```sql
 CREATE TABLE `game` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '游戏名称',
+  `logo` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '下边tab图标',
   `status` int(11) DEFAULT '0' COMMENT '游戏状态，0->未启动，1->配置完成可启动任务，2->正在执行任务',
   `complete_operation` int(11) DEFAULT '0' COMMENT '任务执行完成之后的操作，0->待命，1->关机',
   `gmt_create` datetime DEFAULT NULL,

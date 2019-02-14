@@ -12,6 +12,7 @@ import java.util.Date;
  */
 public class DateTimeUtil {
     private static final String DATETIME_SIMPLE_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE_SIMPLE_PATTERN = "yyyy-MM-dd";
 
     public static String getDateNow() {
         LocalDate todayDate = LocalDate.now();
@@ -47,6 +48,10 @@ public class DateTimeUtil {
      */
     public static String currentTimeStr() {
         return currentTimeStr(DATETIME_SIMPLE_PATTERN);
+    }
+
+    public static String currentDateStr() {
+        return currentTimeStr(DATE_SIMPLE_PATTERN);
     }
 
     /**
