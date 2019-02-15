@@ -74,7 +74,7 @@ CREATE TABLE `game_task_command_group` (
 CREATE TABLE `game_command_group_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL COMMENT '指令集ID',
-  `location` varchar(255) CHARACTER SET latin1 DEFAULT NULL COMMENT '区域找图定位图片，或者某个具体坐标如：11,110',
+  `location` varchar(255) DEFAULT NULL COMMENT '区域找图定位图片，或者某个具体坐标如：11,110',
   `operation` varchar(255) DEFAULT NULL COMMENT '操作指令，包括鼠标操作和键盘操作',
   `duration` int(11) DEFAULT '1000' COMMENT '操作延时',
   `gmt_create` datetime DEFAULT NULL,
