@@ -5,8 +5,8 @@ windows程序启动表
 ```sql
 CREATE TABLE `game_windows_runner` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '游戏名称',
-  `program_source` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '运行程序路径',
+  `game_id` int(11) NOT NULL COMMENT '游戏ID',
+  `program_source` varchar(255) NOT NULL COMMENT '运行程序路径',
   `location` varchar(255) DEFAULT NULL COMMENT '区域找图定位图片，或者某个具体坐标如：11,110',
   `operation` varchar(255) DEFAULT NULL COMMENT '操作指令，包括鼠标操作和键盘操作',
   `duration` int(11) DEFAULT '1000' COMMENT '操作延时',

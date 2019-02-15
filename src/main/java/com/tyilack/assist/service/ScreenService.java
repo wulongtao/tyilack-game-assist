@@ -5,6 +5,10 @@ package com.tyilack.assist.service;
  */
 public interface ScreenService {
 
+    /**
+     * 截屏
+     * @return 截屏图片地址
+     */
     String printScreen();
 
 }
