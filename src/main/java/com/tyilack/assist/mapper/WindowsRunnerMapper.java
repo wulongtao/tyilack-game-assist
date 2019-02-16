@@ -21,7 +21,7 @@ public interface WindowsRunnerMapper {
      * @param gameId
      * @return
      */
-    @Select("SELECT `name`,`program_source`,`location`,`operation`,`duration`,`repeat` FROM `game_windows_runner` WHERE `game_id`=#{gameId} ")
+    @Select("SELECT `name`,`program_source`,`group_id`,`duration`,`repeat` FROM `game_windows_runner` WHERE `game_id`=#{gameId} ")
     List<WindowsRunnerDO> listWindowsRunnerByGame(@Param("gameId") Integer gameId);
 
     /**
@@ -29,7 +29,7 @@ public interface WindowsRunnerMapper {
      * @param windowsRunnerDO
      * @return
      */
-    @Insert("INSERT INTO `game_windows_runner`(`game_id`,`program_source`,`location`,`operation`,`duration`,`repeat`,`gmt_create`,`gmt_modified`) VALUES(#{gameId},#{programSource},#{location},#{operation},#{duration},#{repeat},#{gmtCreate},#{gmtModified})")
+    @Insert("INSERT INTO `game_windows_runner`(`game_id`,`group_id`,`program_source`,`duration`,`repeat`,`gmt_create`,`gmt_modified`) VALUES(#{gameId},#{programSource},#{location},#{operation},#{duration},#{repeat},#{gmtCreate},#{gmtModified})")
     int saveWindowsRunner(WindowsRunnerDO windowsRunnerDO);
 
 }

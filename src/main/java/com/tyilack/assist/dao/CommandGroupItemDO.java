@@ -4,15 +4,17 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * game_command_group_item
+ * @author 小小黑
+ */
 @Data
-public class WindowsRunnerDO {
+public class CommandGroupItemDO {
     private Integer id;
-    private Integer gameId;
     private Integer groupId;
-    private String name;
-    private String programSource;
+    private String location;
+    private String operation;
     private Integer duration;
-    private Integer repeat;
     private Date gmtCreate;
     private Date gmtModified;
 }

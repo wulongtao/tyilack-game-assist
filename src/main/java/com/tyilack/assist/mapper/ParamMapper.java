@@ -8,6 +8,11 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+/**
+ * @author 小小黑
+ */
 @Mapper
 @Repository
 public interface ParamMapper {
@@ -19,6 +24,13 @@ public interface ParamMapper {
      */
     @Select("SELECT `value` FROM `game_param` WHERE `name` = #{name}")
     ParamDO findParamByName(@Param("name") String name);
+
+    /**
+     * 获取所有静态参数
+     * @return
+     */
+    @Select("SELECT `name`,`value` FROM `game_param`")
+    List<ParamDO> listAllParams();
 
     /**
      * 保存系统参数信息

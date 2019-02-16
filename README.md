@@ -111,3 +111,11 @@ CREATE TABLE `game_param` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
+
+定位指令说明（location字段）：
+```
+image{a.png} : 一张图片
+images{a.png,b.png} : 多张图片
+
+
+```

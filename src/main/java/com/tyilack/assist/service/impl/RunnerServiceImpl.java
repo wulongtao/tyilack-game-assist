@@ -1,8 +1,11 @@
 package com.tyilack.assist.service.impl;
 
 import com.tyilack.assist.core.Robot;
+import com.tyilack.assist.dao.CommandGroupItemDO;
 import com.tyilack.assist.dao.WindowsRunnerDO;
+import com.tyilack.assist.mapper.CommandMapper;
 import com.tyilack.assist.mapper.WindowsRunnerMapper;
+import com.tyilack.assist.service.ParamService;
 import com.tyilack.assist.service.RunnerService;
 import com.tyilack.assist.service.ScreenService;
 import com.xnx3.robot.support.CoordBean;
@@ -23,7 +26,11 @@ public class RunnerServiceImpl implements RunnerService {
     @Autowired
     private WindowsRunnerMapper windowsRunnerMapper;
     @Autowired
+    private ParamService paramService;
+    @Autowired
     private ScreenService screenService;
+    @Autowired
+    private CommandMapper commandMapper;
     @Autowired
     private Robot robot;
 
@@ -38,19 +45,32 @@ public class RunnerServiceImpl implements RunnerService {
 
         List<String> dataList = new ArrayList<>();
         try {
+            //需要打开的windows程序
             for (WindowsRunnerDO item : runnerList) {
                 int repeat = item.getRepeat();
-                robot.delay(10000);
+
+                //程序重复运行的次数
                 for (int i = 0; i < repeat; i++) {
                     programSource = item.getProgramSource();
+                    log.info("延时 {} ,执行程序 {} ， 次数 {}", item.getDuration(), programSource, (i+1));
+                    robot.delay(item.getDuration());
                     runtime.exec(programSource);
 
-                    robot.delay(item.getDuration());
-                    CoordBean coordBean = robot.singleImageSearch(item.getLocation(), Robot.SIM_BLUR);
-                    robot.mouseLeftClick(coordBean.getX(), coordBean.getY());
-                    robot.delay(1000);
+                    /**
+                     * 开始运行指令集
+                     */
+                    List<CommandGroupItemDO> commandList = commandMapper.listCommandByGroupId(item.getGroupId());
+                    for (CommandGroupItemDO commandItem : commandList) {
+                        log.info("延时 {}ms 执行指令 {} - {}", commandItem.getDuration(), commandItem.getLocation(), commandItem.getOperation());
+                        robot.delay(commandItem.getDuration());
+                        CoordBean coordBean = robot.singleImageSearch(paramService.getImageLocalPath(commandItem.getLocation()), Robot.SIM_BLUR);
+                        robot.mouseLeftClick(coordBean.getX(), coordBean.getY());
+                    }
+
                     String screenImage = screenService.printScreen();
                     dataList.add(screenImage);
+
+
                 }
             }
         } catch (Exception e) {
