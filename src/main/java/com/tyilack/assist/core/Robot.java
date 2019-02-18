@@ -20,12 +20,14 @@ import com.xnx3.UI;
 import com.xnx3.media.ColorUtil;
 import com.xnx3.robot.support.CoordBean;
 import com.xnx3.robot.support.RgbImageComparerBean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
  * 操作，模拟操作，模拟点击鼠标、按键盘、找图、输入文本等
  * @author tyilack
  */
+@Slf4j
 @Component
 public class Robot{
     /**
@@ -193,6 +195,16 @@ public class Robot{
         robot.keyPress(key);
         robot.delay(5);
         robot.keyRelease(key);
+    }
+
+    /**
+     * 按键
+     * @param key
+     */
+    public void press(String key) {
+        robot.keyPress(StringToKey(key));
+        robot.delay(5);
+        robot.keyRelease(StringToKey(key));
     }
 
     /**
@@ -595,140 +607,143 @@ public class Robot{
      */
     public List<CoordBean> imageSearch(BufferedImage sourceImage,BufferedImage searchImage,int sim){
         List<CoordBean> list = new ArrayList<CoordBean>();
+        try {
+            RgbImageComparerBean pxSource = getPX(sourceImage);
+            RgbImageComparerBean pxSearch = getPX(searchImage);
 
-        RgbImageComparerBean pxSource = getPX(sourceImage);
-        RgbImageComparerBean pxSearch = getPX(searchImage);
+            int extraWidth = pxSearch.getImgWidth() / 2;
+            int extraHeight = pxSearch.getImgHeight() / 2;
 
-        int extraWidth = pxSearch.getImgWidth() / 2;
-        int extraHeight = pxSearch.getImgHeight() / 2;
+            //原图的像素点
+            int[][] px = pxSource.getColorArray();
+            //要搜索的目标图的像素点
+            int[][] pxS = pxSearch.getColorArray();
+            //要搜索的图的像素点的数组最大x下标
+            int pxSXMax = pxSearch.getImgWidth()-1;
+            //要搜索的图的像素点的数组最大y下标
+            int pxSYMax = pxSearch.getImgHeight()-1;
+            //可搜索的x坐标的原图像素数组下标+1
+            int xSearchEnd = pxSource.getImgWidth()-pxSearch.getImgWidth();
+            //可搜索的y坐标的原图像素数组下标+1
+            //要搜索的图片的纵横中心点的像素大小，非坐标
+            int ySearchEnd = pxSource.getImgHeight()-pxSearch.getImgHeight();
+            int contentSearchX = 1;
+            int contentSearchY = 1;
 
-        //原图的像素点
-        int[][] px = pxSource.getColorArray();
-        //要搜索的目标图的像素点
-        int[][] pxS = pxSearch.getColorArray();
-        //要搜索的图的像素点的数组最大x下标
-        int pxSXMax = pxSearch.getImgWidth()-1;
-        //要搜索的图的像素点的数组最大y下标
-        int pxSYMax = pxSearch.getImgHeight()-1;
-        //可搜索的x坐标的原图像素数组下标+1
-        int xSearchEnd = pxSource.getImgWidth()-pxSearch.getImgWidth();
-        //可搜索的y坐标的原图像素数组下标+1
-        //要搜索的图片的纵横中心点的像素大小，非坐标
-        int ySearchEnd = pxSource.getImgHeight()-pxSearch.getImgHeight();
-        int contentSearchX = 1;
-        int contentSearchY = 1;
+            //根据sim计算最小像素匹配率
+            double pxPercent = 0.99f;
+            if(sim>0){
+                //RGB的模糊率／4为最小的像素匹配率，大于这个匹配率，为图像识别成功
+                pxPercent = ((double)sim/255)/4;
+            }
 
-        //根据sim计算最小像素匹配率
-        double pxPercent = 0.99f;
-        if(sim>0){
-            //RGB的模糊率／4为最小的像素匹配率，大于这个匹配率，为图像识别成功
-            pxPercent = ((double)sim/255)/4;
-        }
+            for (int x = 0; x < xSearchEnd; x++) {
+                for (int y = 0; y < ySearchEnd; y++) {
 
-        for (int x = 0; x < xSearchEnd; x++) {
-            for (int y = 0; y < ySearchEnd; y++) {
+                    //对比，是否通过
+                    boolean contrast = false;
 
-                //对比，是否通过
-                boolean contrast = false;
-
-                //如果使用的精确搜索（SIM_ACCURATE、SIM_ACCURATE_VERY），则匹配图像的四个角的点跟中心点
-                if(sim < 32){
-                    //首先比较图片四个角的四个点，如果四个点比较通过，则进行下一轮比较
-                    if(colorCompare(px[x][y], pxS[0][0], sim)){
-                        //要搜索的图左上坐标在原图匹配成功
-                        //原图要搜索的，定位搜索图右上坐标x下标
-                        int pxX = x+pxSearch.getImgWidth()-1;
-                        if(colorCompare(px[pxX][y], pxS[pxSXMax][0], sim)){
-                            //要搜索的图右上坐标在原图匹配成功
+                    //如果使用的精确搜索（SIM_ACCURATE、SIM_ACCURATE_VERY），则匹配图像的四个角的点跟中心点
+                    if(sim < 32){
+                        //首先比较图片四个角的四个点，如果四个点比较通过，则进行下一轮比较
+                        if(colorCompare(px[x][y], pxS[0][0], sim)){
+                            //要搜索的图左上坐标在原图匹配成功
                             //原图要搜索的，定位搜索图右上坐标x下标
-                            int pxY = y+pxSearch.getImgHeight()-1;
-                            if(colorCompare(px[x][pxY], pxS[0][pxSYMax], sim)){
-                                //要搜索的图左下坐标在原图匹配成功
-                                if(colorCompare(px[pxX][pxY], pxS[pxSXMax][pxSYMax], sim)){
-                                    //要搜索的图右下坐标在原图匹配成功
+                            int pxX = x+pxSearch.getImgWidth()-1;
+                            if(colorCompare(px[pxX][y], pxS[pxSXMax][0], sim)){
+                                //要搜索的图右上坐标在原图匹配成功
+                                //原图要搜索的，定位搜索图右上坐标x下标
+                                int pxY = y+pxSearch.getImgHeight()-1;
+                                if(colorCompare(px[x][pxY], pxS[0][pxSYMax], sim)){
+                                    //要搜索的图左下坐标在原图匹配成功
+                                    if(colorCompare(px[pxX][pxY], pxS[pxSXMax][pxSYMax], sim)){
+                                        //要搜索的图右下坐标在原图匹配成功
 
-                                    //进行要搜索的图片的中心点比较
-                                    //计算中心点坐标
-                                    if(pxSXMax>2){
-                                        contentSearchX = (int) Math.ceil(pxSXMax/2);
-                                    }
-                                    if(pxSYMax>2){
-                                        contentSearchY = (int) Math.ceil(pxSYMax/2);
-                                    }
-                                    if(colorCompare(px[x+contentSearchX][y+contentSearchY], pxS[contentSearchX][contentSearchY], sim)){
-                                        //要搜索的图的中心点坐标在原图上匹配成功
-                                        contrast = true;
+                                        //进行要搜索的图片的中心点比较
+                                        //计算中心点坐标
+                                        if(pxSXMax>2){
+                                            contentSearchX = (int) Math.ceil(pxSXMax/2);
+                                        }
+                                        if(pxSYMax>2){
+                                            contentSearchY = (int) Math.ceil(pxSYMax/2);
+                                        }
+                                        if(colorCompare(px[x+contentSearchX][y+contentSearchY], pxS[contentSearchX][contentSearchY], sim)){
+                                            //要搜索的图的中心点坐标在原图上匹配成功
+                                            contrast = true;
+                                        }
                                     }
                                 }
                             }
                         }
+                    }else{
+                        //两个模糊搜索不搜索四角＋中心点
+                        contrast = true;
                     }
-                }else{
-                    //两个模糊搜索不搜索四角＋中心点
-                    contrast = true;
-                }
 
-                //模糊搜索的大模糊不进行纵横十字搜索
-                if(sim < 62){
-                    //如果图片四角点对比通过，进而进行要搜索的图片的纵横中心点，十字形像素条的比较之横向像素条比较
+                    //模糊搜索的大模糊不进行纵横十字搜索
+                    if(sim < 62){
+                        //如果图片四角点对比通过，进而进行要搜索的图片的纵横中心点，十字形像素条的比较之横向像素条比较
+                        if(contrast){
+                            int yes = 0;
+
+                            //计算以搜索图纵向中心，X横向像素条
+                            int ySour = y+contentSearchY;
+                            for (int i = 0; i < pxSearch.getImgWidth(); i++) {
+                                if(colorCompare(px[x+i][ySour], pxS[i][contentSearchY], sim)){
+                                    yes++;
+                                }
+                            }
+                            if((yes/pxSearch.getImgWidth())>pxPercent){
+                                contrast = true;
+                            }else{
+                                contrast = false;
+                            }
+                        }
+
+                        //如果以上对比通过，进而进行要搜索的图片的纵横中心点，十字形像素条的比较之纵向像素条比较
+                        if(contrast){
+                            int yes = 0;
+
+                            //计算以搜索图横向为中心，Y纵向像素条
+                            int xSour = x+contentSearchX;
+                            for (int i = 0; i < pxSearch.getImgHeight(); i++) {
+                                if(colorCompare(px[xSour][y+i], pxS[contentSearchX][i], sim)){
+                                    yes++;
+                                }
+                            }
+
+                            if((yes/pxSearch.getImgHeight())>pxPercent){
+                                contrast = true;
+                            }else{
+                                contrast = false;
+                            }
+                        }
+                    }else{
+                        //大模糊搜索不进行纵横十字搜索
+                        contrast = true;
+                    }
+
+                    //进行整个目标图片的像素扫描
                     if(contrast){
                         int yes = 0;
-
-                        //计算以搜索图纵向中心，X横向像素条
-                        int ySour = y+contentSearchY;
-                        for (int i = 0; i < pxSearch.getImgWidth(); i++) {
-                            if(colorCompare(px[x+i][ySour], pxS[i][contentSearchY], sim)){
-                                yes++;
+                        for (int xS = 0; xS < pxSearch.getImgWidth(); xS++) {
+                            for (int yS = 0; yS < pxSearch.getImgHeight(); yS++) {
+                                if(colorCompare(px[x+xS][y+yS], pxS[xS][yS], sim)){
+                                    yes++;
+                                }
                             }
                         }
-                        if((yes/pxSearch.getImgWidth())>pxPercent){
-                            contrast = true;
-                        }else{
-                            contrast = false;
+                        if((yes/pxSearch.getPxCount())>pxPercent){
+                            CoordBean coord = new CoordBean();
+                            coord.setX(x+extraWidth);
+                            coord.setY(y+extraHeight);
+                            list.add(coord);
                         }
-                    }
-
-                    //如果以上对比通过，进而进行要搜索的图片的纵横中心点，十字形像素条的比较之纵向像素条比较
-                    if(contrast){
-                        int yes = 0;
-
-                        //计算以搜索图横向为中心，Y纵向像素条
-                        int xSour = x+contentSearchX;
-                        for (int i = 0; i < pxSearch.getImgHeight(); i++) {
-                            if(colorCompare(px[xSour][y+i], pxS[contentSearchX][i], sim)){
-                                yes++;
-                            }
-                        }
-
-                        if((yes/pxSearch.getImgHeight())>pxPercent){
-                            contrast = true;
-                        }else{
-                            contrast = false;
-                        }
-                    }
-                }else{
-                    //大模糊搜索不进行纵横十字搜索
-                    contrast = true;
-                }
-
-                //进行整个目标图片的像素扫描
-                if(contrast){
-                    int yes = 0;
-                    for (int xS = 0; xS < pxSearch.getImgWidth(); xS++) {
-                        for (int yS = 0; yS < pxSearch.getImgHeight(); yS++) {
-                            if(colorCompare(px[x+xS][y+yS], pxS[xS][yS], sim)){
-                                yes++;
-                            }
-                        }
-                    }
-                    if((yes/pxSearch.getPxCount())>pxPercent){
-                        CoordBean coord = new CoordBean();
-                        coord.setX(x+extraWidth);
-                        coord.setY(y+extraHeight);
-                        list.add(coord);
                     }
                 }
             }
+        } catch (Exception e) {
+            log.error("区域找图错误：", e);
         }
 
         return list;
@@ -842,7 +857,7 @@ public class Robot{
         BufferedImage cutImage = robot.createScreenCapture(new Rectangle(0, 0, screenWidth,screenHeight));
         List<CoordBean> list = imageSearch(cutImage, getResourceImage(imageName),SIM_ACCURATE);
 
-        if (Objects.isNull(list)) {
+        if (Objects.isNull(list) || list.size() == 0) {
             return null;
         }
         return list.get(0);

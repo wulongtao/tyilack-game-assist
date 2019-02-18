@@ -20,7 +20,7 @@ public interface CommandMapper {
      * @param groupId
      * @return
      */
-    @Select("SELECT `location`,`operation`,`duration` FROM `game_command_group_item` WHERE `group_id`=#{groupId}")
+    @Select("SELECT `condition`,`location`,`operation`,`duration` FROM `game_command_group_item` WHERE `group_id`=#{groupId}")
     List<CommandGroupItemDO> listCommandByGroupId(@Param("groupId") Integer groupId);
 
 }

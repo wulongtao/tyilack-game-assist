@@ -1,5 +1,6 @@
 package com.tyilack.assist.service.impl;
 
+import com.tyilack.assist.core.Executor;
 import com.tyilack.assist.core.Robot;
 import com.tyilack.assist.dao.CommandGroupItemDO;
 import com.tyilack.assist.dao.WindowsRunnerDO;
@@ -33,6 +34,8 @@ public class RunnerServiceImpl implements RunnerService {
     private CommandMapper commandMapper;
     @Autowired
     private Robot robot;
+    @Autowired
+    private Executor executor;
 
     @Override
     public List<String> execProgram(Integer gameId) {
@@ -62,9 +65,7 @@ public class RunnerServiceImpl implements RunnerService {
                     List<CommandGroupItemDO> commandList = commandMapper.listCommandByGroupId(item.getGroupId());
                     for (CommandGroupItemDO commandItem : commandList) {
                         log.info("延时 {}ms 执行指令 {} - {}", commandItem.getDuration(), commandItem.getLocation(), commandItem.getOperation());
-                        robot.delay(commandItem.getDuration());
-                        CoordBean coordBean = robot.singleImageSearch(paramService.getImageLocalPath(commandItem.getLocation()), Robot.SIM_BLUR);
-                        robot.mouseLeftClick(coordBean.getX(), coordBean.getY());
+                        executor.execute(commandItem.getCondition(), commandItem.getLocation(), commandItem.getOperation(), commandItem.getDuration());
                     }
 
                     String screenImage = screenService.printScreen();
@@ -74,7 +75,7 @@ public class RunnerServiceImpl implements RunnerService {
                 }
             }
         } catch (Exception e) {
-            log.error("执行"+programSource+"命令出错", e);
+            log.error("执行"+programSource+"命令出错," + e.getMessage(), e);
             return null;
         }
 

@@ -1,10 +1,12 @@
 package com.tyilack.assist.mapper;
 
 import com.tyilack.assist.dao.GameDO;
+import com.tyilack.assist.dao.GameTaskDO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 /**
+ * game、game_task、game_task_command_group
  * @author wulongtao
  */
 @Mapper
@@ -25,14 +27,24 @@ public interface GameMapper {
      * @return
      */
     @Select("SELECT `name`,`logo`,`status`,`complete_operation` FROM `game` WHERE `id`=#{id}")
-    GameDO findGameById(@Param("id") String id);
+    GameDO findGameById(@Param("id") Integer id);
 
     /**
      * 更新游戏状态
      * @param id
+     * @param status
      * @return
      */
     @Update("UPDATE `game` SET `status`=#{status} WHERE `id`=#{id}")
-    int updateGameStatusById(@Param("id") String id);
+    int updateGameStatusById(@Param("id") Integer id, @Param("status") Integer status);
+
+    /**
+     * 找下一个任务
+     * @param nextTaskId
+     * @return
+     */
+    @Select("SELECT `game_id`,`group_id`,`trigger_time` FROM `game_task` WHERE `next_task_id`=#{nextTaskId}")
+    GameTaskDO findGameTaskByNextTaskId(@Param("nextTaskId") Integer nextTaskId);
+
 
 }

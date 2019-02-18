@@ -5,17 +5,15 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * game_command_group_item
- * @author 小小黑
+ * @author wulongtao
  */
 @Data
-public class CommandGroupItemDO {
+public class GameTaskDO {
     private Integer id;
+    private Integer gameId;
     private Integer groupId;
-    private String condition;
-    private String location;
-    private String operation;
-    private Integer duration;
+    private Date triggerTime;
+    private Integer nextTaskId;
     private Date gmtCreate;
     private Date gmtModified;
 }

@@ -1,5 +1,6 @@
 package com.tyilack.assist.controller;
 
+import com.tyilack.assist.service.GameService;
 import com.tyilack.assist.service.RunnerService;
 import com.tyilack.assist.service.ScreenService;
 import com.tyilack.assist.util.RetResponse;
@@ -8,10 +9,7 @@ import com.tyilack.assist.vo.GameVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -31,6 +29,8 @@ public class GameController {
     private ScreenService screenService;
     @Autowired
     private RunnerService runnerService;
+    @Autowired
+    private GameService gameService;
 
     @PostMapping("/start")
     public RetResult<List<String>> start(@Valid @RequestBody GameVO gameVO) {
@@ -40,6 +40,15 @@ public class GameController {
         }
 
         return retResponse.makeOKRsp(dataList);
+    }
+
+    @PostMapping("/updateGameStatus")
+    public RetResult<Object> updateGameStatus(@Valid @RequestBody GameVO gameVO) {
+        if (!gameService.updateGameStatus(gameVO.getGameId(), gameVO.getStatus())) {
+            return retResponse.makeErrRsp("跟新状态失败，" + gameVO.toString());
+        }
+
+        return retResponse.makeOKRsp();
     }
 
 

@@ -11,5 +11,6 @@ import javax.validation.constraints.NotNull;
 public class GameVO {
     @NotNull
     private Integer gameId;
+    private Integer status;
 
 }
