@@ -1,6 +1,7 @@
 package com.tyilack.assist.util;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -106,6 +107,22 @@ public class DateTimeUtil {
         SimpleDateFormat dformat = new SimpleDateFormat(DATETIME_SIMPLE_PATTERN);
         Timestamp date = Timestamp.valueOf(dformat.format(dat));
         return date;
+    }
+
+    /**
+     * 获取当前时间距离当天凌晨的秒数
+     * @param millis
+     * @return
+     */
+    public static long currentTimeFromMorning(long millis) {
+        SimpleDateFormat sdfOne = new SimpleDateFormat("yyyy-MM-dd");
+        long overTime = 0;
+        try {
+            overTime = (millis - (sdfOne.parse(sdfOne.format(millis)).getTime()))/1000;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return overTime;
     }
 
 }

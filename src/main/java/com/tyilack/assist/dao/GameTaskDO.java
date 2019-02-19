@@ -13,7 +13,7 @@ public class GameTaskDO {
     private Integer gameId;
     private Integer groupId;
     private Date triggerTime;
-    private Integer nextTaskId;
+    private Integer order;
     private Date gmtCreate;
     private Date gmtModified;
 }

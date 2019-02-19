@@ -5,6 +5,8 @@ import com.tyilack.assist.dao.GameTaskDO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * game、game_task、game_task_command_group
  * @author wulongtao
@@ -39,12 +41,19 @@ public interface GameMapper {
     int updateGameStatusById(@Param("id") Integer id, @Param("status") Integer status);
 
     /**
-     * 找下一个任务
-     * @param nextTaskId
+     * 根据状态查询游戏列表
+     * @param status
      * @return
      */
-    @Select("SELECT `game_id`,`group_id`,`trigger_time` FROM `game_task` WHERE `next_task_id`=#{nextTaskId}")
-    GameTaskDO findGameTaskByNextTaskId(@Param("nextTaskId") Integer nextTaskId);
+    @Select("SELECT `id` FROM `game` WHERE `status` = #{status}")
+    List<GameDO> listGameByStatus(@Param("status") Integer status);
 
+    /**
+     * 查询游戏任务列表
+     * @param gameId
+     * @return
+     */
+    @Select("SELECT `id`,`group_id`,`trigger_time` FROM `game_task` WHERE `game_id`=#{gameId} ORDER BY `order` ASC")
+    List<GameTaskDO> listGameTaskByGameId(@Param("gameId") Integer gameId);
 
 }
