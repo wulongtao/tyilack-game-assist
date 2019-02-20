@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     druid:
-      #连接池配置
+      #连接池配置示例
       url: jdbc:mysql://yourIp/yourDbName?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false
       username: yourDbName
       password: yourDbPassword
