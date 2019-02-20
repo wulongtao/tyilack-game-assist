@@ -2,6 +2,7 @@ package com.tyilack.assist.task;
 
 import com.tyilack.assist.core.Executor;
 import com.tyilack.assist.dao.CommandGroupItemDO;
+import com.tyilack.assist.dao.TaskCommandGroupDO;
 import com.tyilack.assist.data.GameTaskCacheModel;
 import com.tyilack.assist.mapper.CommandMapper;
 import com.tyilack.assist.service.DataService;
@@ -34,7 +35,9 @@ public class GameTask {
         if (Objects.isNull(taskModel)) {
             return;
         }
+        Integer gameId = taskModel.getGameId();
         Integer groupId = taskModel.getGroupId();
+        Integer taskId = taskModel.getTaskId();
         //1、执行任务自带指令集（一般是点击下面Tab做程序的切换）
         List<CommandGroupItemDO> taskOwnCommandGroupList =  commandMapper.listCommandByGroupId(groupId);
         for (CommandGroupItemDO item : taskOwnCommandGroupList) {
@@ -42,10 +45,19 @@ public class GameTask {
         }
 
         //2、执行前置指令库的指令
-        
+        List<CommandGroupItemDO> gamePreCommandList = commandMapper.listPreCommandByGameId(gameId);
+        for (CommandGroupItemDO item : gamePreCommandList) {
+            executor.execute(item.getCondition(), item.getLocation(), item.getOperation(), item.getDuration());
+        }
 
-
-
+        //3、依次执行任务里面所有指令集
+        List<TaskCommandGroupDO> allTaskGroupList = commandMapper.listTaskCommandGroupByTaskId(taskId);
+        for (TaskCommandGroupDO commandGroupDO : allTaskGroupList) {
+            List<CommandGroupItemDO> taskCommandGroupList = commandMapper.listCommandByGroupId(commandGroupDO.getGroupId());
+            for (CommandGroupItemDO item : taskCommandGroupList) {
+                executor.execute(item.getCondition(), item.getLocation(), item.getOperation(), item.getDuration());
+            }
+        }
 
     }
 
