@@ -32,7 +32,7 @@ public class ScreenServiceImpl implements ScreenService {
     @Override
     public String printScreen() {
 
-        ThreadUtil.sleep(3000);
+        robot.delay(3000);
         ParamDO screenCaptureInfo = paramMapper.findParamByName("screen_capture_base_path");
         if (Objects.isNull(screenCaptureInfo)) {
             throw new BaseException("截屏目录未配置");

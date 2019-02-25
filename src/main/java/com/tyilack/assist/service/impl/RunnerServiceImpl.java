@@ -63,7 +63,7 @@ public class RunnerServiceImpl implements RunnerService {
                     robot.delay(item.getDuration());
                     runtime.exec(programSource);
 
-                    /**
+                    /*
                      * 开始运行指令集
                      */
                     List<CommandGroupItemDO> commandList = commandMapper.listCommandByGroupId(item.getGroupId());

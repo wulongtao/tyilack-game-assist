@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2019-02-20 15:29:55
+Date: 2019-02-25 15:23:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -57,6 +57,32 @@ CREATE TABLE `game_command_group_item` (
   `gmt_modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for game_gallery
+-- ----------------------------
+DROP TABLE IF EXISTS `game_gallery`;
+CREATE TABLE `game_gallery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT '图片分组名称',
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for game_gallery_item
+-- ----------------------------
+DROP TABLE IF EXISTS `game_gallery_item`;
+CREATE TABLE `game_gallery_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `gallery_id` int(11) NOT NULL COMMENT '图片分组ID',
+  `name` varchar(255) DEFAULT NULL COMMENT '图片描述',
+  `url` varchar(255) DEFAULT NULL COMMENT '图片地址',
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for game_param

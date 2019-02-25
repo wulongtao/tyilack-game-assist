@@ -213,7 +213,7 @@ public class Robot{
     /**
      * 组合键，如SHIFT+1
      * @param key1 如：{@link KeyEvent#VK_SHIFT}
-     * @param key2 如：{@link KeyEvent#VK_1}
+     * @p------------------------------------------------------------------------------------------------------------------aram key2 如：{@link KeyEvent#VK_1}
      */
     public void press(int key1,int key2){
         robot.keyPress(key1);
