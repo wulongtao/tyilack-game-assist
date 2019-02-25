@@ -15,21 +15,16 @@ import java.util.Objects;
 @Slf4j
 @Component("executor")
 public class CommandExecutor implements Executor {
+    private final Robot robot;
+
     @Autowired
-    private Robot robot;
+    public CommandExecutor(Robot robot) {
+        this.robot = robot;
+    }
 
 
-    /**
-     * 指令执行，operation字段写法
-     * q 3 2,w 20 1 : 三秒钟后按下q键循环两次，然后在20秒后按下w键循环一次
-     * @param condition
-     * @param location
-     * @param operation
-     * @param duration
-     * @return
-     */
     @Override
-    public boolean execute(String condition, String location, String operation, Integer duration) {
+    public void execute(String condition, String location, String operation, Integer duration) {
         boolean canExecute = false;
         if (Objects.nonNull(condition)) {
             if (Objects.nonNull(robot.singleImageSearch(condition, Robot.SIM_BLUR))) {
@@ -40,7 +35,7 @@ public class CommandExecutor implements Executor {
         }
 
         if (!canExecute) {
-            return false;
+            return;
         }
 
 
@@ -71,7 +66,5 @@ public class CommandExecutor implements Executor {
         }
 
 
-
-        return true;
     }
 }

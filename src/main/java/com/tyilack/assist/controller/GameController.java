@@ -23,14 +23,18 @@ import java.util.Objects;
 @RestController
 @RequestMapping(value = "/game", consumes="application/json", produces="application/json")
 public class GameController {
+    private final RetResponse retResponse;
+    private final ScreenService screenService;
+    private final RunnerService runnerService;
+    private final GameService gameService;
+
     @Autowired
-    private RetResponse retResponse;
-    @Autowired
-    private ScreenService screenService;
-    @Autowired
-    private RunnerService runnerService;
-    @Autowired
-    private GameService gameService;
+    public GameController(RetResponse retResponse, ScreenService screenService, RunnerService runnerService, GameService gameService) {
+        this.retResponse = retResponse;
+        this.screenService = screenService;
+        this.runnerService = runnerService;
+        this.gameService = gameService;
+    }
 
     @PostMapping("/start")
     public RetResult<List<String>> start(@Valid @RequestBody GameVO gameVO) {

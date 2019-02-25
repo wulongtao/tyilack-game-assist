@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,15 +65,16 @@ import java.util.Map;
 public class ErrorController extends AbstractErrorController {
     private static final String ERROR_INFO_KEY = "errors";
     private static final String JSON_SUFFIX = ".json";
-    @Autowired
-    RetResponse retResponse;
+    private final RetResponse retResponse;
 
-    public ErrorController() {
+    @Autowired
+    public ErrorController(RetResponse retResponse) {
         super(new DefaultErrorAttributes());
+        this.retResponse = retResponse;
     }
 
     @RequestMapping
-    public RetResult<Object> error(HttpServletRequest request, HttpServletResponse response) {
+    public RetResult<Object> error(HttpServletRequest request, HttpServletResponse response, @PathVariable("server.error.path") String parameter) {
         Map<String, Object> model = Collections.unmodifiableMap(getErrorAttributes(request, false));
         //获取异常，有可能为空
         Throwable cause = getCause(request);

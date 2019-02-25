@@ -20,8 +20,12 @@ import java.util.Map;
 public class ParamServiceImpl implements ParamService {
     private Map<String, String> paramCache;
 
+    private final ParamMapper paramMapper;
+
     @Autowired
-    private ParamMapper paramMapper;
+    public ParamServiceImpl(ParamMapper paramMapper) {
+        this.paramMapper = paramMapper;
+    }
 
 
     @PostConstruct

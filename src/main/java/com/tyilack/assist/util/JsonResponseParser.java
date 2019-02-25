@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 /**
  *
- * @author giantan
+ * @author tyilack
  * @date 2017/5/16
  */
 public class JsonResponseParser<T> implements ResponseParser<T> {

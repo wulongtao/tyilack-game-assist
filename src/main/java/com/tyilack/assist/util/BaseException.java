@@ -2,7 +2,7 @@ package com.tyilack.assist.util;
 
 /**
  * 项目全局异常处理基类
- * @author giantan
+ * @author tyilack
  */
 public class BaseException extends RuntimeException {
     private Integer code;

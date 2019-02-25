@@ -33,16 +33,16 @@ public class Robot{
     /**
      * 当前屏幕的宽度。
      */
-    public static int screenWidth;
+    private static int screenWidth;
     /**
      * 当前屏幕的高度。
      */
-    public static int screenHeight;
+    private static int screenHeight;
 
     /**
      * 图片搜索的缓存，搜索图片时某个图片使用后会将其加入内存，以后再次使用此图会先从程序内存找，内存没有才会从硬盘加载。
      */
-    public static Map<String, BufferedImage> bufferedImageList;
+    private static Map<String, BufferedImage> bufferedImageList;
     /**
      * 搜索模糊度参数：非常精确，精确无误
      */
@@ -60,14 +60,17 @@ public class Robot{
      */
     public final static int SIM_BLUR_VERY = 81;
 
-    private Class useClass;	//使用这个工具的class，根据这个来加载图片等资源文件
+    /**
+     * 使用这个工具的class，根据这个来加载图片等资源文件
+     */
+    private Class useClass;
 
-    java.awt.Robot robot;
+    private java.awt.Robot robot;
 
     static{
         try {
             System.setProperty("java.awt.headless", "false");
-            bufferedImageList = new HashMap<String, BufferedImage>();
+            bufferedImageList = new HashMap<>();
             screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
             screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         } catch (Exception e) {

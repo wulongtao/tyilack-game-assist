@@ -24,8 +24,12 @@ public class DataServiceImpl implements DataService {
      */
     private static Map<Integer, GameCacheModel> dataCache = new HashMap<>();
 
+    private final GameMapper gameMapper;
+
     @Autowired
-    private GameMapper gameMapper;
+    public DataServiceImpl(GameMapper gameMapper) {
+        this.gameMapper = gameMapper;
+    }
 
     @PostConstruct
     public void init() {

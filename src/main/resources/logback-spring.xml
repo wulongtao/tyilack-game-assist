@@ -52,7 +52,7 @@ debug:当此属性设置为true时，将打印出logback内部日志信息，实
     </appender>
 
     <!--用来设置某一个包或者具体的某一个类的日志打印级别以及指定appender。-->
-    <logger name="com.giant.gre" level="DEBUG" />
+    <logger name="com.tyilack.assist" level="DEBUG" />
     <logger name="org.apache.zookeeper.ClientCnxn" level="WARN" />
 
     <!--根logger，也是一种logger，且只有一个level属性-->

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * VO DTO DO对象转换器
- * @author giantan
+ * @author tyilack
  */
 @Configuration
 public class DozerBeanMapperConfig {

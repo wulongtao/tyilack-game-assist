@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * HttpClient助手类，主要实现了请求响应数据的格式化，方便开发调用
  *
- * @author giantan
+ * @author tyilack
  * @date 2017/5/15
  */
 @Slf4j

@@ -20,10 +20,14 @@ import java.util.UUID;
  */
 @Service
 public class ScreenServiceImpl implements ScreenService {
+    private final Robot robot;
+    private final ParamMapper paramMapper;
+
     @Autowired
-    private Robot robot;
-    @Autowired
-    private ParamMapper paramMapper;
+    public ScreenServiceImpl(Robot robot, ParamMapper paramMapper) {
+        this.robot = robot;
+        this.paramMapper = paramMapper;
+    }
 
     @Override
     public String printScreen() {

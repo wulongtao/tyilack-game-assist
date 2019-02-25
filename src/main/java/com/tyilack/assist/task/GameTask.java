@@ -22,12 +22,16 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class GameTask {
+    private final DataService dataService;
+    private final CommandMapper commandMapper;
+    private final Executor executor;
+
     @Autowired
-    private DataService dataService;
-    @Autowired
-    private CommandMapper commandMapper;
-    @Autowired
-    private Executor executor;
+    public GameTask(DataService dataService, CommandMapper commandMapper, Executor executor) {
+        this.dataService = dataService;
+        this.commandMapper = commandMapper;
+        this.executor = executor;
+    }
 
     @Scheduled(initialDelay=5000, fixedRate=300000)
     public void run() {

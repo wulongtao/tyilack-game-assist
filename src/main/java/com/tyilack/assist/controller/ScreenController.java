@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/game/screen", consumes="application/json", produces="application/json")
 public class ScreenController {
+    private final RetResponse retResponse;
+    private final ScreenService screenService;
+
     @Autowired
-    private RetResponse retResponse;
-    @Autowired
-    private ScreenService screenService;
+    public ScreenController(RetResponse retResponse, ScreenService screenService) {
+        this.retResponse = retResponse;
+        this.screenService = screenService;
+    }
 
     @GetMapping("/print")
     public RetResult<String> print() {

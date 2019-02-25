@@ -2,7 +2,7 @@ package com.tyilack.assist.util;
 
 /**
  *
- * @author giantan
+ * @author tyilack
  * @date 2018/4/25
  */
 public class RetResult<T> {

@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GameServiceImpl implements GameService {
+    private final GameMapper gameMapper;
+
     @Autowired
-    private GameMapper gameMapper;
+    public GameServiceImpl(GameMapper gameMapper) {
+        this.gameMapper = gameMapper;
+    }
 
     @Override
     public boolean updateGameStatus(Integer gameId, Integer status) {

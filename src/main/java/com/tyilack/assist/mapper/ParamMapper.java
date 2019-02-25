@@ -19,23 +19,23 @@ public interface ParamMapper {
 
     /**
      * 根据参数名找参数值
-     * @param name
-     * @return
+     * @param name 名称
+     * @return 系统参数信息
      */
     @Select("SELECT `value` FROM `game_param` WHERE `name` = #{name}")
     ParamDO findParamByName(@Param("name") String name);
 
     /**
      * 获取所有静态参数
-     * @return
+     * @return 系统参数列表
      */
     @Select("SELECT `name`,`value` FROM `game_param`")
     List<ParamDO> listAllParams();
 
     /**
      * 保存系统参数信息
-     * @param paramDO
-     * @return
+     * @param paramDO 系统参数对象
+     * @return 插入结果
      */
     @Insert("INSERT INTO(`id`,`name`,`desc`,`value`,`gmt_create`,`gmt_modified`) VALUES(#{id}, #{name}, #{desc}, #{value}, #{gmtCreate}, #{gmtModified})")
     int saveParam(ParamDO paramDO);

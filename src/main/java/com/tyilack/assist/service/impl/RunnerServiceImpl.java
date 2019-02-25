@@ -24,18 +24,22 @@ import java.util.Objects;
 @Slf4j
 @Service
 public class RunnerServiceImpl implements RunnerService {
+    private final WindowsRunnerMapper windowsRunnerMapper;
+    private final ParamService paramService;
+    private final ScreenService screenService;
+    private final CommandMapper commandMapper;
+    private final Robot robot;
+    private final Executor executor;
+
     @Autowired
-    private WindowsRunnerMapper windowsRunnerMapper;
-    @Autowired
-    private ParamService paramService;
-    @Autowired
-    private ScreenService screenService;
-    @Autowired
-    private CommandMapper commandMapper;
-    @Autowired
-    private Robot robot;
-    @Autowired
-    private Executor executor;
+    public RunnerServiceImpl(WindowsRunnerMapper windowsRunnerMapper, ParamService paramService, ScreenService screenService, CommandMapper commandMapper, Robot robot, Executor executor) {
+        this.windowsRunnerMapper = windowsRunnerMapper;
+        this.paramService = paramService;
+        this.screenService = screenService;
+        this.commandMapper = commandMapper;
+        this.robot = robot;
+        this.executor = executor;
+    }
 
     @Override
     public List<String> execProgram(Integer gameId) {

@@ -14,7 +14,7 @@ public interface DataService {
 
     /**
      * 自动获取任务
-     * @return
+     * @return 任务对象
      */
     GameTaskCacheModel getTask();
 

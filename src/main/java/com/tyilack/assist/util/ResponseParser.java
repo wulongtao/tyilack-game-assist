@@ -2,7 +2,7 @@ package com.tyilack.assist.util;
 
 /**
  *
- * @author giantan
+ * @author tyilack
  * @date 2017/5/16
  */
 public interface ResponseParser<T> {

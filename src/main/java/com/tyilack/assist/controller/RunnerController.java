@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/game/runner", consumes="application/json", produces="application/json")
 public class RunnerController {
+    private final RetResponse retResponse;
+
     @Autowired
-    private RetResponse retResponse;
-    @Autowired
-    private RunnerService runnerService;
+    public RunnerController(RetResponse retResponse) {
+        this.retResponse = retResponse;
+    }
 
 
     @PostMapping("/exec")
