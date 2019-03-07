@@ -1,6 +1,9 @@
 package com.tyilack.assist.service;
 
 
+/**
+ * @author xiaoxiaohei
+ */
 public interface ParamService {
 
     /**

@@ -2,6 +2,7 @@
 
 定位指令说明（location字段）：
 ```
-image{a.png} : 一张图片
-images{a.png,b.png} : 多张图片
+1 ： gallery_item_id为1的图片，多个图片默认全部找
+1,-1 ： gallery_item_id为1的图片，多个图片默认全部找
+1,0  ： gallery_item_id为1的图片，多个图片默认找第一张图片
 ```

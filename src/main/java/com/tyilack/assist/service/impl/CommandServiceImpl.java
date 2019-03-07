@@ -48,10 +48,7 @@ public class CommandServiceImpl implements CommandService {
         //3、依次执行任务里面所有指令集
         List<TaskCommandGroupDO> allTaskGroupList = commandMapper.listTaskCommandGroupByTaskId(taskId);
         for (TaskCommandGroupDO commandGroupDO : allTaskGroupList) {
-            List<CommandGroupItemDO> taskCommandGroupList = commandMapper.listCommandByGroupId(commandGroupDO.getGroupId());
-            for (CommandGroupItemDO item : taskCommandGroupList) {
-                executor.execute(item.getCondition(), item.getLocation(), item.getOperation(), item.getDuration());
-            }
+            execCommandByGroupId(commandGroupDO.getGroupId());
         }
     }
 }

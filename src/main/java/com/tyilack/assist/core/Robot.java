@@ -14,6 +14,7 @@ import java.util.*;
 
 import javax.imageio.ImageIO;
 
+import com.tyilack.assist.util.BaseException;
 import com.xnx3.Lang;
 import com.xnx3.SystemUtil;
 import com.xnx3.UI;
@@ -747,6 +748,7 @@ public class Robot{
             }
         } catch (Exception e) {
             log.error("区域找图错误：", e);
+            throw new BaseException("区域找图错误");
         }
 
         return list;
