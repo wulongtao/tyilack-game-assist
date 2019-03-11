@@ -28,13 +28,14 @@ public class CommandServiceImpl implements CommandService {
 
 
     @Override
-    public void execCommandByGroupId(Integer groupId) {
+    public void execCommandByGroupId(Integer gameId, Integer groupId) {
         CommandGroupDO commandGroupDO = commandMapper.findCommandGroupById(groupId);
         int repeat = Objects.isNull(commandGroupDO.getRepeat()) ? 1 : commandGroupDO.getRepeat();
         //执行指令集中的指令
         for (int i = 0; i < repeat; i++) {
             List<CommandGroupItemDO> taskOwnCommandGroupList =  commandMapper.listCommandByGroupId(groupId);
             for (CommandGroupItemDO item : taskOwnCommandGroupList) {
+                execCommandByGameId(gameId);
                 executor.execute(item.getCondition(), item.getLocation(), item.getLocationClick(), item.getOffsetX(), item.getOffsetY(), item.getOperation(), item.getDuration());
             }
         }
@@ -50,11 +51,11 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public void execCommandByTaskId(Integer taskId) {
+    public void execCommandByTaskId(Integer gameId, Integer taskId) {
         //3、依次执行任务里面所有指令集
         List<TaskCommandGroupDO> allTaskGroupList = commandMapper.listTaskCommandGroupByTaskId(taskId);
         for (TaskCommandGroupDO commandGroupDO : allTaskGroupList) {
-            execCommandByGroupId(commandGroupDO.getGroupId());
+            execCommandByGroupId(gameId, commandGroupDO.getGroupId());
         }
     }
 }

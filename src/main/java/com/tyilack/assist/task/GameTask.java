@@ -42,7 +42,7 @@ public class GameTask {
         commandService.execCommandByGameId(gameId);
 
         //3、依次执行任务里面所有指令集
-        commandService.execCommandByTaskId(taskId);
+        commandService.execCommandByTaskId(gameId, taskId);
     }
 
 }

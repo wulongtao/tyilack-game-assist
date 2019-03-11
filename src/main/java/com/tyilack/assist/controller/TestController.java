@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,8 +28,8 @@ public class TestController {
     }
 
     @GetMapping("/group")
-    public RetResult<Object> group(Integer groupId) {
-        commandService.execCommandByGroupId(groupId);
+    public RetResult<Object> group(Integer gameId, Integer groupId) {
+        commandService.execCommandByGroupId(gameId, groupId);
         return retResponse.makeOKRsp();
     }
 
