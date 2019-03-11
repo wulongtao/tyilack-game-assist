@@ -330,6 +330,16 @@ public class Robot{
     }
 
     /**
+     * 鼠标移动
+     * @param x 点击的当前屏幕的x坐标
+     * @param y 点击的当前屏幕的y坐标
+     */
+    public void mouseMove(int x, int y){
+        robot.mouseMove(x, y);
+        robot.delay(20);
+    }
+
+    /**
      * 鼠标按住右键,一直按着，配合 {@link #mouseReleaseRight()}弹起释放右键一并使用
      */
     public void mousePressRight(){

@@ -29,7 +29,7 @@ public class CommandExecutor implements Executor {
 
 
     @Override
-    public void execute(String condition, String location, String operation, Integer duration) {
+    public void execute(String condition, String location, Integer locationClick, Integer offsetX, Integer offsetY, String operation, Integer duration) {
         boolean canExecute = false;
         log.info("读取条件： {}", condition);
 
@@ -67,7 +67,12 @@ public class CommandExecutor implements Executor {
                 if (isHit) {
                     log.info("定位操作，location : {},x : {},y : {}, duration: {}", location, imageCoord.getX(), imageCoord.getY(), duration);
                     robot.delay(duration);
-                    robot.mouseLeftClick(imageCoord.getX(), imageCoord.getY());
+                    if (locationClick == 0) {
+                        robot.mouseMove(imageCoord.getX()+offsetX, imageCoord.getY()+offsetY);
+                    } else {
+                        robot.mouseLeftClick(imageCoord.getX()+offsetX, imageCoord.getY()+offsetY);
+                    }
+
                 }
                 index++;
             }

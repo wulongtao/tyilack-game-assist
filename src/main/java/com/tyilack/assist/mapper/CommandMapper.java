@@ -1,5 +1,6 @@
 package com.tyilack.assist.mapper;
 
+import com.tyilack.assist.dao.CommandGroupDO;
 import com.tyilack.assist.dao.CommandGroupItemDO;
 import com.tyilack.assist.dao.TaskCommandGroupDO;
 import org.apache.ibatis.annotations.Mapper;
@@ -16,12 +17,15 @@ import java.util.List;
 @Repository
 public interface CommandMapper {
 
+    @Select("SELECT `id`,`name`,`repeat` FROM `game_command_group` WHERE `id` = #{id}")
+    CommandGroupDO findCommandGroupById(@Param("id") Integer id);
+
     /**
      * 获取指令集中的所有指令
      * @param groupId 指令集ID
      * @return 指令列表
      */
-    @Select("SELECT `condition`,`location`,`operation`,`duration` FROM `game_command_group_item` WHERE `group_id`=#{groupId}")
+    @Select("SELECT `condition`,`location`,`location_click`,`offset_x`,`offset_y`,`operation`,`duration` FROM `game_command_group_item` WHERE `group_id`=#{groupId}")
     List<CommandGroupItemDO> listCommandByGroupId(@Param("groupId") Integer groupId);
 
     /**
@@ -29,7 +33,7 @@ public interface CommandMapper {
      * @param gameId 游戏ID
      * @return 游戏前置指令列表
      */
-    @Select("SELECT `condition`,`location`,`operation`,`duration` FROM `game_pre_command` AS `a` JOIN `game_command_group_item` AS `b` ON `a`.`group_id`=`b`.`group_id` WHERE `a`.`game_id`=#{gameId}")
+    @Select("SELECT `condition`,`location`,`location_click`,`offset_x`,`offset_y`,`operation`,`duration` FROM `game_pre_command` AS `a` JOIN `game_command_group_item` AS `b` ON `a`.`group_id`=`b`.`group_id` WHERE `a`.`game_id`=#{gameId}")
     List<CommandGroupItemDO> listPreCommandByGameId(@Param("gameId") Integer gameId);
 
     /**

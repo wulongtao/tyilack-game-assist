@@ -11,9 +11,11 @@ public interface Executor {
      * q 3 2,w 20 1 : 三秒钟后按下q键循环两次，然后在20秒后按下w键循环一次
      * @param condition 执行条件
      * @param location 位置
+     * @param offsetX X方向偏移量
+     * @param offsetY Y方向偏移量
      * @param operation 操作
      * @param duration 延时
      */
-    void execute(String condition, String location, String operation, Integer duration);
+    void execute(String condition, String location, Integer locationClick, Integer offsetX, Integer offsetY, String operation, Integer duration);
 
 }

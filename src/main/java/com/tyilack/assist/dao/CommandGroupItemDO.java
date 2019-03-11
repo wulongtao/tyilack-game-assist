@@ -14,6 +14,9 @@ public class CommandGroupItemDO {
     private Integer groupId;
     private String condition;
     private String location;
+    private Integer locationClick;
+    private Integer offsetX;
+    private Integer offsetY;
     private String operation;
     private Integer duration;
     private Date gmtCreate;
